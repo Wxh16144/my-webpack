@@ -1,7 +1,8 @@
 const path = require('path')
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'production',
@@ -60,9 +61,41 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name]_[contenthash:8].css'
     }),
+    new OptimizeCSSAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano')
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, './src/search.html'),
+      filename: 'search.html',
+      chunks: ['search'],
+      inject: true,
+      minify: {
+        html5: true,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: false
+      }
+    }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, './src/index.html'),
+      filename: 'index.html',
+      chunks: ['index'],
+      inject: true,
+      minify: {
+        html5: true,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true,
+        minifyJS: true,
+        removeComments: true
+      }
+    }),
   ]
 }
-/* 
+/*
 Hash: 和整改项目的构建相关，只要项目的文件哟修改，整个项目构建的 hash 就会更改
 Chunkhash: 和 webpack 打包的 chunk 有关，不同的 entry 会生成不同的 chunkhash 值
 Contenthash: 根据文件内容来定义 hash ，文件内容不变，则 contenthash 不变
