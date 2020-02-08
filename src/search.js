@@ -3,10 +3,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import './search.less'
+import my from './images/my.png'
 
 class Search extends React.Component {
   render() {
-    return <div className="search-text"> Search Page </div>
+    return (
+      <>
+        <img src={my} />
+        <div className="search-text"> Search Page </div>
+      </>
+    )
   }
 }
 
