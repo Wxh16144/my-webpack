@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 
 const setMAP = () => {
   let entry = {}
@@ -112,9 +113,21 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
+    new HtmlWebpackExternalsPlugin({
+      externals: [
+        {
+          module: 'react',
+          entry: 'https://unpkg.com/react@16/umd/react.production.min.js',
+          global: 'React',
+        },
+        {
+          module: 'react-dom',
+          entry: 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
+          global: 'ReactDOM',
+        }
+      ],
+    })
   ],
-  // eval or source-map or  inline-source-map
-  devtool: 'inline-source-map'
 }
 /*
 Hash: 和整改项目的构建相关，只要项目的文件哟修改，整个项目构建的 hash 就会更改
