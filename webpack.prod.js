@@ -37,7 +37,7 @@ const setMAP = () => {
 const { entry, htmlWebpackPlugins } = setMAP()
 
 module.exports = {
-  mode: 'none', // production
+  mode: 'production', // production
   // default: ./src/index.js
   entry,
   //  default: ./dist/main.js
@@ -121,6 +121,11 @@ module.exports = {
           name: 'commons',
           chunks: 'all',
           minChunks: 2 // 至少引用2次
+        },
+        vendors: {
+          test: /(react|react-dom)/,
+          name: 'vendors',
+          chunks: 'all',
         }
       }
     }
