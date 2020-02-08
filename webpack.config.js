@@ -47,5 +47,16 @@ module.exports = {
         use: 'file-loader'
       }
     ]
+  },
+  // 默认false
+  watch: true,
+  // 只有 watch 为 true 时, watchOptions 才生效
+  watchOptions: {
+    // 默认为空 不监听的文件或者文件夹，支持正则匹配
+    ignored: /node_modules/,
+    // 监听到变化发生后会等待300ms再去执行, 默认300ms
+    aggregateTimeout: 300,
+    // 判断文件是否发生变化是通过不停轮询系统置顶文件有没有变化实现的，默认每秒1000次
+    poll: 1000
   }
 }
