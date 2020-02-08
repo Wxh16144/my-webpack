@@ -37,7 +37,7 @@ const setMAP = () => {
 const { entry, htmlWebpackPlugins } = setMAP()
 
 module.exports = {
-  mode: 'production',
+  mode: 'none', // production
   // default: ./src/index.js
   entry,
   //  default: ./dist/main.js
@@ -112,7 +112,9 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
-  ]
+  ],
+  // eval or source-map or  inline-source-map
+  devtool: 'inline-source-map'
 }
 /*
 Hash: 和整改项目的构建相关，只要项目的文件哟修改，整个项目构建的 hash 就会更改
