@@ -113,8 +113,17 @@ module.exports = {
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
   ],
-  // eval or source-map or  inline-source-map
-  devtool: 'inline-source-map'
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /(react|react-dom)/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
+  }
 }
 /*
 Hash: 和整改项目的构建相关，只要项目的文件哟修改，整个项目构建的 hash 就会更改
