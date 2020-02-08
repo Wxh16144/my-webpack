@@ -2,6 +2,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { add } from '../../common'
+
 import './search.less'
 import my from './images/my.png'
 

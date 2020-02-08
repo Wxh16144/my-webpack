@@ -115,11 +115,12 @@ module.exports = {
   ],
   optimization: {
     splitChunks: {
+      minSize: 0,  // 引用模块的大小 0 表示只要引用
       cacheGroups: {
         commons: {
-          test: /(react|react-dom)/,
-          name: 'vendors',
-          chunks: 'all'
+          name: 'commons',
+          chunks: 'all',
+          minChunks: 2 // 至少引用2次
         }
       }
     }
