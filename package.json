@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
+    "build:ssr": "webpack --config webpack.ssr.js",
     "watch": "webpack --watch",
-    "dev": "webpack-dev-server --config webpack.dev.js"
+    "dev": "webpack-dev-server --config webpack.dev.js",
+    "ssr": "node server/index.js",
+    "pressr":"npm run build:ssr"
   },
   "repository": {
     "type": "git",
@@ -35,6 +38,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "express": "^4.17.1",
     "file-loader": "^5.0.2",
     "glob": "^7.1.6",
     "html-webpack-plugin": "^3.2.0",
