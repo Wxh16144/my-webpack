@@ -54,6 +54,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "lib-flexible": "^0.3.2"
+    "lib-flexible": "^0.3.2",
+    "private-test-package": "^1.0.0"
   }
 }
