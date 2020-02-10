@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const setMAP = () => {
   let entry = {}
@@ -115,6 +116,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
+    new FriendlyErrorsWebpackPlugin(),
   ],
   optimization: {
     splitChunks: {
@@ -132,7 +134,16 @@ module.exports = {
         }
       }
     }
-  }
+  },
+  stats: 'errors-only'
+  /* 
+  errors-only : 只在发生错误时输出
+  minimal : 只在发生错误或者有写的编译时输出
+  none : 没有输出
+  normal : 标准输出 
+  verbose : 全部输出
+  */
+
 }
 /*
 Hash: 和整改项目的构建相关，只要项目的文件哟修改，整个项目构建的 hash 就会更改

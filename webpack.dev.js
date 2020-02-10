@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const setMAP = () => {
   let entry = {}
@@ -86,10 +87,12 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
+    new FriendlyErrorsWebpackPlugin(),
   ],
   devServer: {
     contentBase: './dist',
-    hot: true
+    hot: true,
+    stats: 'errors-only'
   },
   // see: https://www.webpackjs.com/configuration/devtool/
   devtool: "cheap-source-map"
