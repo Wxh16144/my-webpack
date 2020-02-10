@@ -2,9 +2,21 @@ if (typeof window === 'undefined') {
   global.window = {}
 }
 const path = require('path')
+const fs = require('fs')
 const express = require('express')
 const { renderToString } = require('react-dom/server')
 const SSR = require(path.join(__dirname, '../dist/search-server'))
+const template = fs.readFileSync(path.join(__dirname, '../dist/search.html'), 'utf-8')
+
+const { randomColor, randomNumber } = require('private-test-package')
+
+const mockData = Array.from(Array(randomNumber(10, 50)), (_, id) => {
+  return {
+    id,
+    value: randomNumber(1000, 200000),
+    color: randomColor()
+  }
+})
 
 const server = (port) => {
   const app = express()
@@ -12,7 +24,7 @@ const server = (port) => {
   app.use(express.static(path.join(__dirname, '../dist')));
 
   app.get('/search', (req, res) => {
-    res.status(200).send(template(renderToString(SSR)))
+    res.status(200).send(renderMarkup(renderToString(SSR)))
   })
 
   app.listen(port, (err) => {
@@ -23,17 +35,8 @@ const server = (port) => {
 }
 server(process.env.PORT || 3000)
 
-const template = (body) => `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Search Page SSR</title>
-</head>
-<body>
-  <div id="root">
-    ${body}
-  </div>
-</body>
-</html>
-`
+const renderMarkup = (body) => template
+  .replace('<!-- HTML_PLACEHOLDER -->', body)
+  .replace('<!-- INITIAL_DATA_PLACEHOLDER -->', `<script>window.__initial_data = ${
+    JSON.stringify(mockData)
+    }</script>`)
