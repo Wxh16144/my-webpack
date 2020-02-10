@@ -117,6 +117,17 @@ module.exports = {
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
     new FriendlyErrorsWebpackPlugin(),
+    function () {
+      // this.plugins() webpack 3.x
+      this.hooks.done.tap('done', stats => {
+        const { compilation } = stats
+        const { errors } = compilation || {}
+        if (errors && errors.length && process.argv.indexOf('-watch') === -1) {
+          console.log('打包失败,可以在这里做一些日志提交');
+          process.exit(1)
+        }
+      })
+    }
   ],
   optimization: {
     splitChunks: {
