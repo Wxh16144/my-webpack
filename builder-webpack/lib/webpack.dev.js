@@ -1,7 +1,7 @@
 
-const merge = require('webpack-merge')
-const webpack = require('webpack')
-const baseConfig = require('./webpack.base')
+const merge = require('webpack-merge');
+const webpack = require('webpack');
+const baseConfig = require('./webpack.base');
 
 
 const devConfig = {
@@ -12,10 +12,10 @@ const devConfig = {
   devServer: {
     contentBase: './dist',
     hot: true,
-    stats: 'errors-only'
+    stats: 'errors-only',
   },
   // see: https://www.webpackjs.com/configuration/devtool/
-  devtool: "cheap-source-map"
-}
+  devtool: 'cheap-source-map',
+};
 
-module.exports = merge(baseConfig, devConfig)
+module.exports = merge(baseConfig, devConfig);

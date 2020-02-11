@@ -1,10 +1,10 @@
-const merge = require('webpack-merge')
+const merge = require('webpack-merge');
 
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 
 
-const baseConfig = require('./webpack.base')
+const baseConfig = require('./webpack.base');
 
 const SSRConfig = {
   mode: 'production',
@@ -12,14 +12,14 @@ const SSRConfig = {
     rules: [
       {
         test: /\.(css|less)$/,
-        use: 'ignore-loader'
+        use: 'ignore-loader',
       },
-    ]
+    ],
   },
   plugins: [
     new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css$/g,
-      cssProcessor: require('cssnano')
+      cssProcessor: require('cssnano'),
     }),
     new HtmlWebpackExternalsPlugin({
       externals: [
@@ -32,22 +32,22 @@ const SSRConfig = {
           module: 'react-dom',
           entry: 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js',
           global: 'ReactDOM',
-        }
+        },
       ],
-    })
+    }),
   ],
   optimization: {
     splitChunks: {
-      minSize: 0,  // 引用模块的大小 0 表示只要引用
+      minSize: 0, // 引用模块的大小 0 表示只要引用
       cacheGroups: {
         commons: {
           name: 'commons',
           chunks: 'all',
-          minChunks: 2 // 至少引用2次
-        }
-      }
-    }
+          minChunks: 2, // 至少引用2次
+        },
+      },
+    },
   },
-}
+};
 
-module.exports = merge(baseConfig, SSRConfig)
+module.exports = merge(baseConfig, SSRConfig);
