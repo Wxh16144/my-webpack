@@ -1,3 +1,4 @@
+const path = require('path')
 const merge = require('webpack-merge');
 
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -8,6 +9,10 @@ const baseConfig = require('./webpack.base');
 
 const prodConfig = {
   mode: 'production',
+  output: {
+    path: path.join(process.cwd(), 'dist'),
+    filename: '[name]_[chunkhash:8].js',
+  },
   plugins: [
     new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css$/g,

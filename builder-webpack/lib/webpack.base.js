@@ -7,10 +7,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const projectRoot = process.cwd();
+
 const setMAP = () => {
   const entry = {};
   const htmlWebpackPlugins = [];
-  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+  const entryFiles = glob.sync(path.join(projectRoot, './src/*/index.js'));
   Object.keys(entryFiles).forEach((key) => {
     const entryFile = entryFiles[key];
     const match = entryFile.match(/src\/(.*)\/index\.js/);
@@ -18,7 +20,7 @@ const setMAP = () => {
     entry[pageName] = entryFile;
     htmlWebpackPlugins.push(
       new HtmlWebpackPlugin({
-        template: path.join(__dirname, `src/${pageName}/index.html`),
+        template: path.join(projectRoot, `src/${pageName}/index.html`),
         filename: `${pageName}.html`,
         chunks: [pageName],
         inject: true,
@@ -114,6 +116,7 @@ module.exports = {
         const { errors } = compilation || {};
         if (errors && errors.length && process.argv.indexOf('-watch') === -1) {
           // console.log('打包失败,可以在这里做一些日志提交');
+          console.log('ERROR:', errors);
           process.exit(1);
         }
       });
