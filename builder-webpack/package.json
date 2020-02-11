@@ -7,16 +7,19 @@
     "lib": "lib"
   },
   "scripts": {
-    "lint": "eslint ./lib --fix"
+    "lint": "eslint ./lib --fix",
+    "test": "istanbul cover ./node_modules/.bin/_mocha"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "assert": "^2.0.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "glob-all": "^3.1.0",
+    "istanbul": "^0.4.5",
     "mocha": "^7.0.1"
   },
   "dependencies": {
