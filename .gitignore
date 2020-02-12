@@ -4,3 +4,4 @@ node_modules
 dist
 !private-test-package/dist/
 stats.json
+search copy */
