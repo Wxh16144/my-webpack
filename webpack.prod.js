@@ -9,6 +9,11 @@ const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
+
+const PATHS = {
+  src: path.join(__dirname, 'src'),
+};
 
 const setMAP = () => {
   const entry = {};
@@ -142,6 +147,9 @@ module.exports = {
       filepath: path.resolve(__dirname, './build/**/*.dll.js'),
     }),
     new HardSourceWebpackPlugin(),
+    new PurgecssPlugin({
+      paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
+    }),
     function () {
       // this.plugins() webpack 3.x
       this.hooks.done.tap('done', (stats) => {
