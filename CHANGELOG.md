@@ -1,4 +1,29 @@
-# [1.0.0](https://github.com/Wxh16144/my-webpack/compare/1.2.0...1.0.0) (2020-02-12)
+# [1.0.0](https://github.com/Wxh16144/my-webpack/compare/1.3.0...1.0.0) (2020-02-12)
+
+
+
+# [1.3.0](https://github.com/Wxh16144/my-webpack/compare/1.2.0...1.3.0) (2020-02-12)
+
+
+### Bug Fixes
+
+* 修复引用本地私有包安装失败问题 ([33b71fb](https://github.com/Wxh16144/my-webpack/commit/33b71fb18ec41b94b566a302e6890f315026808a))
+
+
+### Performance Improvements
+
+* 优化构建速度 ([fb21538](https://github.com/Wxh16144/my-webpack/commit/fb2153816ce5250847fcc7e5e0e0b2291a1e63b1))
+* 使用terser-webpack-plugin多进程压缩代码 ([14ea6fd](https://github.com/Wxh16144/my-webpack/commit/14ea6fdce4e49b07717749c562e60fa7b6839642))
+* 使用thread-loader多进程打包 ([971c022](https://github.com/Wxh16144/my-webpack/commit/971c022c59bc6162887ddd58f6a2cecbd52e8f17))
+* 使用tree-shaking去掉没有使用到的css ([3efb6c5](https://github.com/Wxh16144/my-webpack/commit/3efb6c5776ffd5e76721d1cf6bfcb761e7ae0d53))
+* 压缩图片 ([76917bd](https://github.com/Wxh16144/my-webpack/commit/76917bd11f3008cefcdd4d2d9f482731ece505bd))
+* 预编译资源模块 ([b3b6221](https://github.com/Wxh16144/my-webpack/commit/b3b6221ae4baa54f871d82b874b57714fe78447e))
+
+
+### Reverts
+
+* Revert "feat: 使用speed-measure-webpack-plugin分析loader和plugin速度" ([cafb7a9](https://github.com/Wxh16144/my-webpack/commit/cafb7a9f70b8b7cc4aaedd74743d7ff06fc6149b))
+* Revert "feat: 使用webpack-bundle-analyzer分析构建体积" ([ec19d7a](https://github.com/Wxh16144/my-webpack/commit/ec19d7ab7734b16afebc87fda04943f0c5a67b26))
 
 
 
