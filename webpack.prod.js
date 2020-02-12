@@ -1,17 +1,19 @@
-const path = require('path')
-const glob = require('glob')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const path = require('path');
+const glob = require('glob');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const webpack = require('webpack');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 
 const setMAP = () => {
-  let entry = {}
-  let htmlWebpackPlugins = []
-  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'))
-  Object.keys(entryFiles).forEach(key => {
+  const entry = {};
+  const htmlWebpackPlugins = [];
+  const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'));
+  Object.keys(entryFiles).forEach((key) => {
     const entryFile = entryFiles[key];
     const match = entryFile.match(/src\/(.*)\/index\.js/);
     const pageName = match && match[1];
@@ -28,15 +30,15 @@ const setMAP = () => {
           preserveLineBreaks: false,
           minifyCSS: true,
           minifyJS: true,
-          removeComments: false
-        }
-      })
-    )
-  })
-  return { entry, htmlWebpackPlugins }
+          removeComments: false,
+        },
+      }),
+    );
+  });
+  return { entry, htmlWebpackPlugins };
 };
 
-const { entry, htmlWebpackPlugins } = setMAP()
+const { entry, htmlWebpackPlugins } = setMAP();
 
 module.exports = {
   mode: 'production', // production
@@ -45,7 +47,7 @@ module.exports = {
   //  default: ./dist/main.js
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: '[name]_[chunkhash:8].bundle.js'
+    filename: '[name]_[chunkhash:8].bundle.js',
   },
   module: {
     rules: [
@@ -55,8 +57,8 @@ module.exports = {
           {
             loader: 'thread-loader',
             options: {
-              workers: 3
-            }
+              workers: 3,
+            },
           },
           'babel-loader',
           // 'eslint-loader'
@@ -66,8 +68,8 @@ module.exports = {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
+          'css-loader',
+        ],
       },
       {
         test: /\.less$/,
@@ -79,100 +81,107 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               plugins: () => [require('autoprefixer')({
-                browsers: ['last 2 version', '>1%', 'ios 7']
-              })
-              ]
-            }
+                browsers: ['last 2 version', '>1%', 'ios 7'],
+              }),
+              ],
+            },
           },
           {
             loader: 'px2rem-loader',
             options: {
               remUnit: 75,
-              remPrecision: 8
-            }
-          }
-        ]
+              remPrecision: 8,
+            },
+          },
+        ],
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
         use: {
           loader: 'file-loader',
           options: {
-            name: '[name]_[hash:8].[ext]'
-          }
-        }
+            name: '[name]_[hash:8].[ext]',
+          },
+        },
       },
       {
         test: /.(woff|woff2|eot|ttf|otf)$/,
         use: {
           loader: 'file-loader',
           options: {
-            name: '[name]_[hash:8].[ext]'
-          }
-        }
-      }
-    ]
+            name: '[name]_[hash:8].[ext]',
+          },
+        },
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name]_[contenthash:8].css'
+      filename: '[name]_[contenthash:8].css',
     }),
     new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css$/g,
-      cssProcessor: require('cssnano')
+      cssProcessor: require('cssnano'),
     }),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
     // new FriendlyErrorsWebpackPlugin(),
+    /* new webpack.DllReferencePlugin({
+      context: path.join(__dirname),
+      manifest: require('./build/library/library.json'),
+    }), */
+    new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, './build/**/*.dll.js'),
+    }),
     function () {
       // this.plugins() webpack 3.x
-      this.hooks.done.tap('done', stats => {
-        const { compilation } = stats
-        const { errors } = compilation || {}
+      this.hooks.done.tap('done', (stats) => {
+        const { compilation } = stats;
+        const { errors } = compilation || {};
         if (errors && errors.length && process.argv.indexOf('-watch') === -1) {
           console.log('打包失败,可以在这里做一些日志提交');
-          process.exit(1)
+          process.exit(1);
         }
-      })
-    }
+      });
+    },
   ],
   optimization: {
-    splitChunks: {
-      minSize: 0,  // 引用模块的大小 0 表示只要引用
-      cacheGroups: {
-        commons: {
-          name: 'commons',
-          chunks: 'all',
-          minChunks: 2 // 至少引用2次
-        },
-        vendors: {
-          test: /(react|react-dom)/,
-          name: 'vendors',
-          chunks: 'all',
-        }
-      }
-    },
+    // splitChunks: {
+    //   minSize: 0, // 引用模块的大小 0 表示只要引用
+    //   cacheGroups: {
+    //     commons: {
+    //       name: 'commons',
+    //       chunks: 'all',
+    //       minChunks: 2, // 至少引用2次
+    //     },
+    //     vendors: {
+    //       test: /(react|react-dom)/,
+    //       name: 'vendors',
+    //       chunks: 'all',
+    //     },
+    //   },
+    // },
     minimizer: [
       // webpack4.x 推荐使用  支持es6
       new TerserPlugin({
-        parallel: true // 开启并行压缩
+        parallel: true, // 开启并行压缩
         /**
          * parallel-uglify-plugin
          * uglifyjs-webpack-plugin 只支持es5
          */
-      })
-    ]
+      }),
+    ],
   },
   // stats: 'errors-only'
-  /* 
+  /*
   errors-only : 只在发生错误时输出
   minimal : 只在发生错误或者有写的编译时输出
   none : 没有输出
-  normal : 标准输出 
+  normal : 标准输出
   verbose : 全部输出
   */
 
-}
+};
 /*
 Hash: 和整改项目的构建相关，只要项目的文件哟修改，整个项目构建的 hash 就会更改
 Chunkhash: 和 webpack 打包的 chunk 有关，不同的 entry 会生成不同的 chunkhash 值

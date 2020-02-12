@@ -1,7 +1,9 @@
 {
   "parser": "babel-eslint",
   "extends": "airbnb",
-  "rules": {},
+  "rules": {
+    "camelcase": 0
+  },
   "env": {
     "browser": true,
     "node": true
