@@ -110,12 +110,37 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
-        use: {
+        use: [{
           loader: 'file-loader',
           options: {
             name: '[name]_[hash:8].[ext]',
           },
         },
+        {
+          loader: 'image-webpack-loader',
+          options: {
+            mozjpeg: {
+              progressive: true,
+              quality: 65,
+            },
+            // optipng.enabled: false will disable optipng
+            optipng: {
+              enabled: false,
+            },
+            pngquant: {
+              quality: [0.65, 0.90],
+              speed: 4,
+            },
+            gifsicle: {
+              interlaced: false,
+            },
+            // the webp option will enable WEBP
+            webp: {
+              quality: 75,
+            },
+          },
+        },
+        ],
       },
       {
         test: /.(woff|woff2|eot|ttf|otf)$/,
@@ -138,7 +163,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
-    // new FriendlyErrorsWebpackPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
     /* new webpack.DllReferencePlugin({
       context: path.join(__dirname),
       manifest: require('./build/library/library.json'),
@@ -146,7 +171,7 @@ module.exports = {
     new AddAssetHtmlPlugin({
       filepath: path.resolve(__dirname, './build/**/*.dll.js'),
     }),
-    new HardSourceWebpackPlugin(),
+    // new HardSourceWebpackPlugin(),
     new PurgecssPlugin({
       paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true }),
     }),
