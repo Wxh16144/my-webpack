@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const smp = new SpeedMeasureWebpackPlugin()
 
@@ -130,10 +131,11 @@ const config = {
           process.exit(1)
         }
       })
-    }
+    },
+    new BundleAnalyzerPlugin()
   ],
   optimization: {
-    splitChunks: {
+    /* splitChunks: {
       minSize: 0,  // 引用模块的大小 0 表示只要引用
       cacheGroups: {
         commons: {
@@ -147,7 +149,7 @@ const config = {
           chunks: 'all',
         }
       }
-    }
+    } */
   },
   stats: 'errors-only'
   /* 
