@@ -5,6 +5,9 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
+
+const smp = new SpeedMeasureWebpackPlugin()
 
 const setMAP = () => {
   let entry = {}
@@ -37,7 +40,7 @@ const setMAP = () => {
 
 const { entry, htmlWebpackPlugins } = setMAP()
 
-module.exports = {
+const config = {
   mode: 'production', // production
   // default: ./src/index.js
   entry,
@@ -116,7 +119,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
-    // new FriendlyErrorsWebpackPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
     function () {
       // this.plugins() webpack 3.x
       this.hooks.done.tap('done', stats => {
@@ -146,7 +149,7 @@ module.exports = {
       }
     }
   },
-  // stats: 'errors-only'
+  stats: 'errors-only'
   /* 
   errors-only : 只在发生错误时输出
   minimal : 只在发生错误或者有写的编译时输出
@@ -156,6 +159,8 @@ module.exports = {
   */
 
 }
+
+module.exports = smp.wrap(config)
 /*
 Hash: 和整改项目的构建相关，只要项目的文件哟修改，整个项目构建的 hash 就会更改
 Chunkhash: 和 webpack 打包的 chunk 有关，不同的 entry 会生成不同的 chunkhash 值
