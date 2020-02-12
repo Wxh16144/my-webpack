@@ -51,6 +51,12 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
+          {
+            loader: 'thread-loader',
+            options: {
+              workers: 3
+            }
+          },
           'babel-loader',
           // 'eslint-loader'
         ],
