@@ -64,6 +64,6 @@
   },
   "dependencies": {
     "lib-flexible": "^0.3.2",
-    "private-test-package": "^1.0.0"
+    "private-test-package": "file:private-test-package"
   }
 }
