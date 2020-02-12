@@ -5,6 +5,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin');
 
 const setMAP = () => {
   let entry = {}
@@ -150,7 +151,17 @@ module.exports = {
           chunks: 'all',
         }
       }
-    }
+    },
+    minimizer: [
+      // webpack4.x 推荐使用  支持es6
+      new TerserPlugin({
+        parallel: true // 开启并行压缩
+        /**
+         * parallel-uglify-plugin
+         * uglifyjs-webpack-plugin 只支持es5
+         */
+      })
+    ]
   },
   // stats: 'errors-only'
   /* 
