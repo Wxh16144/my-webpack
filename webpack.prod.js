@@ -5,6 +5,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const Happypack = require('happypack')
 
 const setMAP = () => {
   let entry = {}
@@ -51,8 +52,9 @@ module.exports = {
       {
         test: /\.js$/,
         use: [
-          'babel-loader',
+          // 'babel-loader',
           // 'eslint-loader'
+          'happypack/loader'
         ],
       },
       {
@@ -127,7 +129,10 @@ module.exports = {
           process.exit(1)
         }
       })
-    }
+    },
+    new Happypack({
+      loaders:['babel-loader']
+    })
   ],
   optimization: {
     splitChunks: {
