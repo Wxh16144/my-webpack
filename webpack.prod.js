@@ -116,7 +116,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     ...htmlWebpackPlugins,
-    new FriendlyErrorsWebpackPlugin(),
+    // new FriendlyErrorsWebpackPlugin(),
     function () {
       // this.plugins() webpack 3.x
       this.hooks.done.tap('done', stats => {
@@ -146,7 +146,7 @@ module.exports = {
       }
     }
   },
-  stats: 'errors-only'
+  // stats: 'errors-only'
   /* 
   errors-only : 只在发生错误时输出
   minimal : 只在发生错误或者有写的编译时输出
