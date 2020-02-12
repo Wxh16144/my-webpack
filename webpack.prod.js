@@ -8,6 +8,7 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 const setMAP = () => {
   const entry = {};
@@ -49,6 +50,12 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     filename: '[name]_[chunkhash:8].bundle.js',
   },
+  resolve: {
+    alias: {
+      react: path.resolve(__dirname, './node_modules/react/umd/react.production.min.js'),
+      'react-dom': path.resolve(__dirname, './node_modules/react-dom/umd/react-dom.production.min.js'),
+    },
+  },
   module: {
     rules: [
       {
@@ -60,9 +67,10 @@ module.exports = {
               workers: 3,
             },
           },
-          'babel-loader',
+          'babel-loader?cacheDirectory=true',
           // 'eslint-loader'
         ],
+        include: path.resolve('src'),
       },
       {
         test: /\.css$/,
@@ -133,6 +141,7 @@ module.exports = {
     new AddAssetHtmlPlugin({
       filepath: path.resolve(__dirname, './build/**/*.dll.js'),
     }),
+    new HardSourceWebpackPlugin(),
     function () {
       // this.plugins() webpack 3.x
       this.hooks.done.tap('done', (stats) => {
@@ -165,6 +174,7 @@ module.exports = {
       // webpack4.x 推荐使用  支持es6
       new TerserPlugin({
         parallel: true, // 开启并行压缩
+        cache: true, // 默认开启
         /**
          * parallel-uglify-plugin
          * uglifyjs-webpack-plugin 只支持es5
